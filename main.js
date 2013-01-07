@@ -1,5 +1,36 @@
+
+
+
+if (Meteor.isServer) {
+  Deployments = new Meteor.Collection("deployments");
+  Meteor.startup(function () {
+    if (Deployments.find().count() === 0) {
+    	    Meteor.http.get("http://localhost:3000/deployments.json", function(error,results){
+	  var i = 1;
+	  var myServerHash= {};
+	  JSON.parse(results.content).forEach(function(d) {
+	    if (! myServerHash[d.fqdn]) {
+	      myServerHash[d.fqdn] = i++;
+	    }
+	    d.fqdnid = myServerHash[d.fqdn];
+	    // normalize the timestamp:
+	    myDate = new Date(d.ts.$date ).setMinutes(0);
+	    d.date = new Date(myDate).setHours(0);
+	    d.desc = d.project+":"+d.version;
+	    delete d._id;
+	    d.ts = new Date(d.ts.$date); 
+	    Deployments.insert(d);
+	  });
+	});
+    }
+  });
+}
+
+
 if (Meteor.isClient) {
 
+	
+	
 /*
   Template.hello.greeting = function () {
     return "Welcome to meteor-deployments.";
@@ -62,14 +93,14 @@ if (Meteor.isClient) {
 	var focus = svg.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	    
-	var text = focus.append("g")
+	var text = svg.append("g")
 	    .attr("id","text")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	 
 	var context = svg.append("g")
 	    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 	 
-	d3.json("/deployments3.json", function(data) {
+	d3.json("/deployments.json", function(data) {
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {
@@ -158,10 +189,6 @@ if (Meteor.isClient) {
   
 }
 
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-}
+
 
 
