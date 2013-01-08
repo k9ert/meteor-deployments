@@ -1,7 +1,11 @@
 meteor-deployments
 ==================
 
-A meteor-application reading from a mongodb rendering deploymentdata via d3
+A meteor-application reading from a mongodb rendering deploymentdata via 
+Deploymentdata is coming from puppi, a deployment-framework which is
+creating that data in a mongodb via it's mongo-reporting-capability
+https://github.com/example42/puppi/
+https://github.com/example42/puppi/blob/master/files/scripts/report_mongo.sh
 
 At least, that's the plan.
 
