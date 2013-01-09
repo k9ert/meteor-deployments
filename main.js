@@ -23,6 +23,11 @@ if (Meteor.isServer) {
 	  });
 	});
     }
+    // We should turn off autopublish sooner or later
+    /* Meteor.publish("all-deployments", function () {
+      return Deployments.find(); // everything
+    } */
+
   });
 }
 
@@ -49,6 +54,7 @@ if (Meteor.isClient) {
 // Many of this stuff is copied from 
 // http://www.benmcmahen.com/blog/posts/50eb57d55a94d35262000001
 Template.map.rendered = function() {
+	console.log("Here we go!");
 	// copied ... reason?!
 	this.node = this.find('#video-map');
  
@@ -104,13 +110,14 @@ Template.map.rendered = function() {
 	 
 	var context = svg.append("g")
 	    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
-	 
-	d3.json("/deployments.json", function(data) {
 	
+	var drawstuff = function(data) { 
+		console.log("data:" + data);
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {
 	    if (! myServerHash[d.fqdn]) {
+	      console.log(d.fqdn);
 	      myServerHash[d.fqdn] = i++;
 	    }
 	    d.fqdnid = myServerHash[d.fqdn];
@@ -168,7 +175,15 @@ Template.map.rendered = function() {
 	    .selectAll("rect")
 	      .attr("y", -6)
 	      .attr("height", height2 + 7);
-	});
+	}
+	
+	console.log("now subscribe");	
+	Meteor.subscribe("deployments");
+	console.log("now find && fetch");
+	var deployments = Deployments.find().fetch(); 
+console.log(deployments);
+	d3.json("/deployments.json", drawstuff);
+	drawstuff(deployments);
 	  
 	
 	
