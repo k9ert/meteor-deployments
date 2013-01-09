@@ -4,6 +4,7 @@
 
 <body>
 {{> hello}}
+{{> map}}
 </body>
 
 
@@ -11,4 +12,18 @@
 <template name="hello">
   <h1>Hello World!</h1>
   The second X-Axis is a brushing-area. So, brush it!!
+</template>
+
+<template name='map'>
+  <div class='timeline-wrapper'>
+  {{#constant}}
+    <svg id='video-map' width='100%' height='60'>    
+      <g class='map-wrap' transform = 'translate(0,60)'>
+          <rect class='timeline-click-zone' y='-60' height='60'></rect>
+          <g class='caption-spans'></g>
+          <line id='current-position' y1='0' y2='-60'></line>
+      </g>
+    </svg>
+  {{/constant}}
+</div>
 </template>

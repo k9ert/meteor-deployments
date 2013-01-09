@@ -1,8 +1,8 @@
 
-
+Deployments = new Meteor.Collection("deployments");
 
 if (Meteor.isServer) {
-  Deployments = new Meteor.Collection("deployments");
+
   Meteor.startup(function () {
     if (Deployments.find().count() === 0) {
     	    Meteor.http.get("http://localhost:3000/deployments.json", function(error,results){
@@ -45,7 +45,12 @@ if (Meteor.isClient) {
     }
   });
 */
-  Meteor.startup( function() {
+
+// Many of this stuff is copied from 
+// http://www.benmcmahen.com/blog/posts/50eb57d55a94d35262000001
+Template.map.rendered = function() {
+	// copied ... reason?!
+	this.node = this.find('#video-map');
  
 	var margin = {top: 10, right: 10, bottom: 100, left: 180},
 	    margin2 = {top: 430, right: 10, bottom: 20, left: 180},
@@ -101,6 +106,7 @@ if (Meteor.isClient) {
 	    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 	 
 	d3.json("/deployments.json", function(data) {
+	
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {
@@ -183,7 +189,7 @@ if (Meteor.isClient) {
 
 
 
-  });
+  }
 
 
   
