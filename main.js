@@ -56,7 +56,7 @@ if (Meteor.isClient) {
 Template.map.rendered = function() {
 	console.log("Here we go!");
 	// copied ... reason?!
-	this.node = this.find('#video-map');
+	this.node = this.find('#screen');
  
 	var margin = {top: 10, right: 10, bottom: 100, left: 180},
 	    margin2 = {top: 430, right: 10, bottom: 20, left: 180},
@@ -91,7 +91,7 @@ Template.map.rendered = function() {
 	    .y0(height2)
 	    .y1(function(d) { return y2(d.price); });
 	 
-	var svg = d3.select("body").append("svg")
+	var svg = d3.select("#screen")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom);
 	 
