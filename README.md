@@ -9,8 +9,6 @@ https://github.com/example42/puppi/
 
 https://github.com/example42/puppi/blob/master/files/scripts/report_mongo.sh
 
-The status right now is, that it reads from a json-file and d3-rendering is quite improvable.
-That json file is also loaded into the meteor-mongo-db but the data is still
-used from the json-file.
+The status right now is, that it nitially populates the mongodb and use the db on the client-side, not very nice code yet. The d3-rendering is quite improvable.
 
 To start, simply clone and start meteor.

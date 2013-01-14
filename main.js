@@ -1,46 +1,24 @@
 
 Deployments = new Meteor.Collection("deployments");
 
-if (Meteor.isServer) {
-
-  Meteor.startup(function () {
-    if (Deployments.find().count() === 0) {
-    	    Meteor.http.get("http://localhost:3000/deployments.json", function(error,results){
-	  var i = 1;
-	  var myServerHash= {};
-	  JSON.parse(results.content).forEach(function(d) {
-	    if (! myServerHash[d.fqdn]) {
-	      myServerHash[d.fqdn] = i++;
-	    }
-	    d.fqdnid = myServerHash[d.fqdn];
-	    // normalize the timestamp:
-	    myDate = new Date(d.ts.$date ).setMinutes(0);
-	    d.date = new Date(myDate).setHours(0);
-	    d.desc = d.project+":"+d.version;
-	    delete d._id;
-	    d.ts = new Date(d.ts.$date); 
-	    Deployments.insert(d);
-	  });
-	});
-    }
-    // We should turn off autopublish sooner or later
-    /* Meteor.publish("all-deployments", function () {
-      return Deployments.find(); // everything
-    } */
-
-  });
-}
 
 
 if (Meteor.isClient) {
+  /*
+  Meteor.subscribe("deployments");
+  Meteor.autosubscribe(function () {
+	Meteor.subscribe("deployments"); 
+  }); */
+	
+  console.log("noooooooo" + Deployments.find().count());
+  console.log("now find && fetch+" + Deployments.find({}).count());
+	
 
-	
-	
-/*
   Template.hello.greeting = function () {
-    return "Welcome to meteor-deployments.";
+    return "Welcome to meteor-deployments ("+Deployments.find().count()+")";
   };
 
+/*  
   Template.hello.events({
     'click input' : function () {
       // template data, if any, is available in 'this'
@@ -53,8 +31,21 @@ if (Meteor.isClient) {
 
 // Many of this stuff is copied from 
 // http://www.benmcmahen.com/blog/posts/50eb57d55a94d35262000001
+Template.map.depldata = function() {
+	Meteor.autosubscribe(function () {
+	return Deployments.find();
+	});
+};
+
 Template.map.rendered = function() {
 	console.log("Here we go!");
+	console.log("now subscribe");	
+	
+	console.log("now find && fetch+" + Deployments.find().count());
+
+	
+	//var deployments = Template.map["depldata"]().fetch(); 
+	//console.log(deployments);
 	// copied ... reason?!
 	this.node = this.find('#screen');
  
@@ -111,8 +102,9 @@ Template.map.rendered = function() {
 	var context = svg.append("g")
 	    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 	
-	var drawstuff = function(data) { 
-		console.log("data:" + data);
+	self.drawsomestuff = Meteor.autorun(function() {
+	  data = Deployments.find().fetch();
+	  console.log("data:" + data);
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {
@@ -122,9 +114,9 @@ Template.map.rendered = function() {
 	    }
 	    d.fqdnid = myServerHash[d.fqdn];
 	    // nomralize the timestamp:
-	    myDate = new Date(d.ts.$date ).setMinutes(0);
-	    d.date = new Date(myDate).setHours(0);
-	    d.desc = d.project+":"+d.version;
+	    //myDate = new Date(d.ts.$date ).setMinutes(0);
+	    //d.date = new Date(myDate).setHours(0);
+	    //d.desc = d.project+":"+d.version;
 	  });
 	 
 	  yAxis.tickValues(d3.keys(myServerHash));
@@ -175,15 +167,11 @@ Template.map.rendered = function() {
 	    .selectAll("rect")
 	      .attr("y", -6)
 	      .attr("height", height2 + 7);
-	}
+	});
 	
-	console.log("now subscribe");	
-	Meteor.subscribe("deployments");
-	console.log("now find && fetch");
-	var deployments = Deployments.find().fetch(); 
-console.log(deployments);
-	d3.json("/deployments.json", drawstuff);
-	drawstuff(deployments);
+
+	//d3.json("/deployments.json", drawstuff);
+
 	  
 	
 	
@@ -210,6 +198,39 @@ console.log(deployments);
   
 }
 
+
+if (Meteor.isServer) {
+  Meteor.startup(function () {
+    if (Deployments.find().count() === 0) {
+    	    console.log("yessss");
+    	    Meteor.http.get("http://localhost:3000/deployments.json", function(error,results){
+	  var i = 1;
+	  var myServerHash= {};
+	  JSON.parse(results.content).forEach(function(d) {
+	    if (! myServerHash[d.fqdn]) {
+	      myServerHash[d.fqdn] = i++;
+	    }
+	    d.fqdnid = myServerHash[d.fqdn];
+	    // normalize the timestamp:
+	    myDate = new Date(d.ts.$date ).setMinutes(0);
+	    d.date = new Date(myDate).setHours(0);
+	    d.desc = d.project+":"+d.version;
+	    delete d._id;
+	    d.ts = new Date(d.ts.$date); 
+	    Deployments.insert(d);
+	  });
+	});
+    } else {
+      console.log("noooooooo" + Deployments.find().count());
+    }
+  });
+      // We should turn off autopublish sooner or later
+  /* Meteor.publish("deployments", function () {
+   console.log("new client, let's publish+"+Deployments.find().count());
+   
+   return Deployments.find(); // everything
+  } ); */
+}
 
 
 
