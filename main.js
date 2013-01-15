@@ -4,18 +4,9 @@ Deployments = new Meteor.Collection("deployments");
 
 
 if (Meteor.isClient) {
-  /*
-  Meteor.subscribe("deployments");
-  Meteor.autosubscribe(function () {
-	Meteor.subscribe("deployments"); 
-  }); */
-	
-  console.log("noooooooo" + Deployments.find().count());
-  console.log("now find && fetch+" + Deployments.find({}).count());
-	
 
   Template.hello.greeting = function () {
-    return "Welcome to meteor-deployments ("+Deployments.find().count()+")";
+    return "Welcome! We have "+Deployments.find().count()+" deployments to explore";
   };
 
 /*  
@@ -31,21 +22,10 @@ if (Meteor.isClient) {
 
 // Many of this stuff is copied from 
 // http://www.benmcmahen.com/blog/posts/50eb57d55a94d35262000001
-Template.map.depldata = function() {
-	Meteor.autosubscribe(function () {
-	return Deployments.find();
-	});
-};
+
 
 Template.map.rendered = function() {
-	console.log("Here we go!");
-	console.log("now subscribe");	
-	
-	console.log("now find && fetch+" + Deployments.find().count());
 
-	
-	//var deployments = Template.map["depldata"]().fetch(); 
-	//console.log(deployments);
 	// copied ... reason?!
 	this.node = this.find('#screen');
  
@@ -86,11 +66,11 @@ Template.map.rendered = function() {
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom);
 	 
-	svg.append("defs").append("clipPath")
+	/*svg.append("defs").append("clipPath")
 	    .attr("id", "clip")
 	  .append("rect")
 	    .attr("width", width)
-	    .attr("height", height); 
+	    .attr("height", height); */ 
 	 
 	var focus = svg.append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -102,9 +82,10 @@ Template.map.rendered = function() {
 	var context = svg.append("g")
 	    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 	
+
+	    
 	self.drawsomestuff = Meteor.autorun(function() {
 	  data = Deployments.find().fetch();
-	  console.log("data:" + data);
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {
@@ -113,10 +94,6 @@ Template.map.rendered = function() {
 	      myServerHash[d.fqdn] = i++;
 	    }
 	    d.fqdnid = myServerHash[d.fqdn];
-	    // nomralize the timestamp:
-	    //myDate = new Date(d.ts.$date ).setMinutes(0);
-	    //d.date = new Date(myDate).setHours(0);
-	    //d.desc = d.project+":"+d.version;
 	  });
 	 
 	  yAxis.tickValues(d3.keys(myServerHash));
@@ -126,6 +103,10 @@ Template.map.rendered = function() {
 	  x2.domain(x.domain());
 	  y2.domain(y.domain());
 	  
+	  focus.append("g")
+	      .attr("class", "x axis")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(xAxis);
 	  
 	 
 	  /*focus.append("path")
@@ -135,18 +116,29 @@ Template.map.rendered = function() {
 	  
 	  text.selectAll("text")
 	  	.data(data)
+	  	.enter().append("circle")
+	  	.style("stroke", "gray")
+	  	.style("fill", "white")
+	  	.attr("r", 4)
+	  	.attr("cx", function(d) { return x(d.date); })
+	  	.attr("cy", function(d) { return y(d.fqdnid);})
+	  	.attr("height", 3)
+	  	.attr("width", 3)
+	  	.attr("x", function(d) { return x(d.date); })
+	  	.attr("y", function(d) { return y(d.fqdnid);}); 
+	  	
+	  	
+	  /*text.selectAll("text")
+	  	.data(data)
 	  	.enter().append("text")
 	  	.attr("x",function(d) { return x(d.date); })
 	  	.attr("y",function(d) { return y(d.fqdnid); })
 	  	.attr("dy",".71em")
 	  	// Rotating does not help so much
 	  	//.attr("transform",function(d) { return "rotate(-90 "+ x(d.date) + "," + y(d.fqdnid)+")"; })
-	  	.text(function(d) { return d.desc; });
+	  	.text(function(d) { return d.desc; });*/  
 	  
-	  focus.append("g")
-	      .attr("class", "x axis")
-	      .attr("transform", "translate(0," + height + ")")
-	      .call(xAxis);
+
 	 
 	  focus.append("g")
 	      .attr("class", "y axis")
@@ -180,13 +172,24 @@ Template.map.rendered = function() {
   /* focus.select("path").attr("d", area); */
   focus.select(".x.axis").call(xAxis);
   	
-  text.selectAll("text")
+  /*text.selectAll("text")
 	  .attr("x",function(d) { return x(d.date); })
 	  .attr("y",function(d) { return y(d.fqdnid  ); })
 	  .attr("dy",".71em")
 	  // Rotating does not help so much
 	  //.attr("transform",function(d) { return "rotate(-90 "+ x(d.date) + "," + y(d.fqdnid)+")"; })
-	  .text(function(d) { return d.desc; });
+	  .text(function(d) { return d.desc; });*/
+  
+	  text.selectAll("circle")
+	    	.style("stroke", "gray")
+	  	.style("fill", "white")
+	  	.attr("r", 4)
+	  	.attr("cx", function(d) { return x(d.date); })
+	  	.attr("cy", function(d) { return y(d.fqdnid);})
+	  	.attr("height", 3)
+	  	.attr("width", 3)
+	  	.attr("x", function(d) { return x(d.date); })
+	  	.attr("y", function(d) { return y(d.fqdnid);}); 
 
 } 
 
@@ -202,7 +205,6 @@ Template.map.rendered = function() {
 if (Meteor.isServer) {
   Meteor.startup(function () {
     if (Deployments.find().count() === 0) {
-    	    console.log("yessss");
     	    Meteor.http.get("http://localhost:3000/deployments.json", function(error,results){
 	  var i = 1;
 	  var myServerHash= {};
@@ -220,8 +222,6 @@ if (Meteor.isServer) {
 	    Deployments.insert(d);
 	  });
 	});
-    } else {
-      console.log("noooooooo" + Deployments.find().count());
     }
   });
       // We should turn off autopublish sooner or later
