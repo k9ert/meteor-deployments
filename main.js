@@ -9,6 +9,18 @@ if (Meteor.isClient) {
     return "Welcome! We have "+Deployments.find().count()+" deployments to explore";
   };
 
+  
+  Template.environments.environments = function () {
+    var allDepls = Deployments.find().fetch();
+    var allEnv = [];
+    allDepls.forEach( function(d) {
+     if (allEnv.indexOf(d.environment) < 0) {
+       allEnv.push(d);
+     }
+     console.log(allEnv);
+     return allEnv;
+    } );
+  };
 /*  
   Template.hello.events({
     'click input' : function () {
@@ -125,7 +137,9 @@ Template.map.rendered = function() {
 	  	.attr("height", 3)
 	  	.attr("width", 3)
 	  	.attr("x", function(d) { return x(d.date); })
-	  	.attr("y", function(d) { return y(d.fqdnid);}); 
+	  	.attr("y", function(d) { return y(d.fqdnid);})
+	  	.append("svg:title")
+	  	.text(function(d) { return d.desc; });; 
 	  	
 	  	
 	  /*text.selectAll("text")
@@ -205,8 +219,9 @@ Template.map.rendered = function() {
 if (Meteor.isServer) {
   Meteor.startup(function () {
     if (Deployments.find().count() === 0) {
-    	    Meteor.http.get("http://localhost:3000/deployments.json", function(error,results){
+    	    Meteor.http.get("http://puppi-deployments.meteor.com/deployments.json", function(error,results){
 	  var i = 1;
+	  console.log(i);
 	  var myServerHash= {};
 	  JSON.parse(results.content).forEach(function(d) {
 	    if (! myServerHash[d.fqdn]) {

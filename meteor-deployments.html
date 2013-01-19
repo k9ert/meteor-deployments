@@ -4,6 +4,7 @@
 
 <body>
 {{> hello}}
+{{>environments}}
 {{> map}}
 </body>
 
@@ -19,4 +20,19 @@
     <svg id='screen' width='100%' >    
     </svg>
   {{/constant}}
+</template>
+
+<template name="environments">
+  <div class="environments">
+    {{#each environments}}
+      {{> environment}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="environment">
+  <div class="environment {{selected}}">
+    <span class="name">{{environment}}</span>
+    <span class="servercount">{{servercount}}</span>
+  </div>
 </template>
