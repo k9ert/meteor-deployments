@@ -4,7 +4,8 @@
 
 <body>
 {{> hello}}
-{{>environments}}
+{{> datetimepicker}}
+{{> environments}}
 {{> map}}
 </body>
 
@@ -13,6 +14,13 @@
 <template name="hello">
   <h1>{{greeting}}</h1>
   The second X-Axis is a brushing-area. So, brush it!!<br/>
+</template>
+
+<template name="datetimepicker">
+    <div class="datetimepicker" id="datetimepicker" data-date-format="dd-mm-yyyy">
+     <input class="span2" size="16" type="text" value="12-02-2012">
+  <span class="add-on"><i class="icon-th"></i></span>
+  </div>
 </template>
 
 <template name='map'>

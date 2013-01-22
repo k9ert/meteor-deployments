@@ -1,0 +1,19 @@
+{
+  "meteor": {
+    "git": "https://github.com/meteor/meteor.git",
+    "branch": "master",
+    "commit": "4d98d8cb4e5a95e9e98953f44c872c9332a042a3"
+  },
+  "dependencies": {
+    "basePackages": {
+      "bootstrap-datepicker": {}
+    },
+    "packages": {
+      "bootstrap-datepicker": {
+        "git": "https://github.com/acidsound/bootstrap-datepicker.git",
+        "tag": "v0.5.0",
+        "commit": "b20b1b7c764b2907019050c4bd7dacbee6cdcb95"
+      }
+    }
+  }
+}

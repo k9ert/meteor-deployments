@@ -9,6 +9,9 @@ if (Meteor.isClient) {
     return "Welcome! We have "+Deployments.find().count()+" deployments to explore";
   };
 
+  Template.datetimepicker.rendered=function() {
+    $('div.datetimepicker').datepicker();
+  }
   
   Template.environments.environments = function () {
     var allDepls = Deployments.find().fetch();
@@ -17,7 +20,7 @@ if (Meteor.isClient) {
      if (allEnv.indexOf(d.environment) < 0) {
        allEnv.push(d);
      }
-     console.log(allEnv);
+     //console.log(allEnv);
      return allEnv;
     } );
   };

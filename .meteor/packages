@@ -8,3 +8,6 @@ insecure
 preserve-inputs
 d3
 http
+bootstrap
+jquery
+bootstrap-datepicker
