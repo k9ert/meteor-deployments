@@ -4,14 +4,27 @@ Deployments = new Meteor.Collection("deployments");
 
 
 if (Meteor.isClient) {
-
+	
   Template.hello.greeting = function () {
     return "Welcome! We have "+Deployments.find().count()+" deployments to explore";
   };
 
   Template.datetimepicker.rendered=function() {
-    $('div.datetimepicker').datepicker();
+    $('div.datetimepicker').datepicker({
+        format: 'M dd, yyyy',
+        autoclose: true
+       });
   }
+  
+  Template.datetimepicker.fromdate = function () {
+    return Session.get("fromdate");	  
+  }
+  
+  Template.datetimepicker.events({
+    'enter': function () {
+      Session.set("fromdate",text);
+   } });
+
   
   Template.environments.environments = function () {
     var allDepls = Deployments.find().fetch();
