@@ -8,7 +8,9 @@ Template.hello.greeting = function () {
   return "Welcome! We have "+Deployments.find().count()+" deployments to explore";
 };
 
+Session.set("datepicker_unset", 1);
 Template.dtp.rendered = function() {
+  if (Session.get("datepicker_unset")) {
   dp = $('#datetimepicker').datepicker({
       format: 'M dd, yyyy',
       autoclose: true
@@ -16,15 +18,20 @@ Template.dtp.rendered = function() {
   dp.on('changeDate', function(ev){
     Session.set("fromdate", ev.date);
     $('#datetimepicker').datepicker('hide');
-    $("#dtpif").value(ev.date);
   });
+  /*dp.on('click', function(ev){
+    $('#datetimepicker').datepicker('show');
+  });*/
+  //Session.set("datepicker_unset", 0);
+  }
   
 }
   
 Template.dtp.fromdate = function () {
   return Session.get("fromdate");	  
 }
- 
+
+/*
 Session.set("datepicker_unset", 1);
 Template.dtp.events({
   'click #datetimepicker': function (event) {
@@ -43,7 +50,7 @@ Template.dtp.events({
      alert("changeDate triggered");	   
    }
 });
-
+*/
   
 Template.environments.environments = function () {
   var allDepls = Deployments.find().fetch();
@@ -177,7 +184,14 @@ Template.map.rendered = function() {
 	      .datum(data)
 	      .attr("clip-path", "url(#clip)")
 	      .attr("d", area); */
-
+	  
+	  text.selectAll("text")
+	  	.data(data)
+	  	.exit()
+	  	.transition()
+	  	.duration(1000);
+	  	//.remove(); 
+	      
 	 text.selectAll("circle")
 	.style("stroke", "gray")
 	.style("fill", "white")
@@ -204,10 +218,7 @@ Template.map.rendered = function() {
 	  	.append("svg:title")
 	  	.text(function(d) { return d.desc; });; 
 	  
-	  text.selectAll("text")
-	  	.data(data)
-	  	.exit()
-	  	.remove(); 
+
 	  	
 	  /*text.selectAll("text")
 	  	.data(data)
