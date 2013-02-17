@@ -1,5 +1,15 @@
 Deployments = new Meteor.Collection("deployments");
 
+// some mappings
+// color
+var colormapping = function (d) {
+  return d.result == "OK" ? "green" : d.result == "WARNING" ? "yellow" : "red"; 
+}
+// description
+var descmapping = function (d) {
+  return d.environment + "\n" + d.fqdn + "\n" + d.ts + "\n" + d.project+":"+d.version + "\n" + d.result;
+}	
+
 Template.hello.rendered = function() {
 $('.alert').text("This is the alert div");	
 }
@@ -8,50 +18,10 @@ Template.hello.greeting = function () {
   return "Welcome! We have "+Deployments.find().count()+" deployments to explore";
 };
 
-Session.set("datepicker_unset", 1);
-Template.dtp.rendered = function() {
-  if (Session.get("datepicker_unset")) {
-  dp = $('#datetimepicker').datepicker({
-      format: 'M dd, yyyy',
-      autoclose: true
-     });
-  dp.on('changeDate', function(ev){
-    Session.set("fromdate", ev.date);
-    $('#datetimepicker').datepicker('hide');
-  });
-  /*dp.on('click', function(ev){
-    $('#datetimepicker').datepicker('show');
-  });*/
-  //Session.set("datepicker_unset", 0);
-  }
-  
-}
-  
-Template.dtp.fromdate = function () {
-  return Session.get("fromdate");	  
-}
 
-/*
-Session.set("datepicker_unset", 1);
-Template.dtp.events({
-  'click #datetimepicker': function (event) {
-        $('#alert').text("test");
-        if (Session.get("datepicker_unset")) {
-            $(event.target).datepicker({
-              format: 'M dd, yyyy',
-              autoclose: true
-            });
-            Session.set("datepicker_unset", 0);
-        }
-        //$(event.target).datepicker('update');
-        Session.set("fromdate", event.target.value);
-   },
-   'changeDate #datetimepicker': function (event) {
-     alert("changeDate triggered");	   
-   }
-});
-*/
-  
+
+
+ 
 Template.environments.environments = function () {
   var allDepls = Deployments.find().fetch();
   var allEnv = [];
@@ -75,11 +45,6 @@ Template.environments.environments = function () {
   });
 */
 
-// Many of this stuff is copied from 
-// http://www.benmcmahen.com/blog/posts/50eb57d55a94d35262000001
-Template.map.deployments = function() {
-  return Deployments.find().fetch();
-}
 
 Template.map.rendered = function() {
 
@@ -179,35 +144,30 @@ Template.map.rendered = function() {
 	  
 	  xaxisc.call(xAxis);
 	  
-	 
-	  /*focus.append("path")
-	      .datum(data)
-	      .attr("clip-path", "url(#clip)")
-	      .attr("d", area); */
-	  
 	  text.selectAll("text")
 	  	.data(data)
 	  	.exit()
 	  	.transition()
-	  	.duration(1000);
-	  	//.remove(); 
+	  	.duration(1000)
+	  	.remove(); 
 	      
 	 text.selectAll("circle")
-	.style("stroke", "gray")
-	.style("fill", "white")
-	.attr("r", 4)
-	.attr("cx", function(d) { return x(d.date); })
-	.attr("cy", function(d) { return y(d.fqdnid);})
-	.attr("height", 3)
-	.attr("width", 3)
-	.attr("x", function(d) { return x(d.date); })
-	.attr("y", function(d) { return y(d.fqdnid);}); 
+	  	.style("stroke", "black")
+	  	.style("fill", colormapping)
+	  	.attr("r", 4)
+	  	.attr("cx", function(d) { return x(d.date); })
+	  	.attr("cy", function(d) { return y(d.fqdnid);})
+	  	.attr("height", 3)
+	  	.attr("width", 3)
+	  	.attr("x", function(d) { return x(d.date); })
+	  	.attr("y", function(d) { return y(d.fqdnid);});
+
 	
 	  text.selectAll("text")
 	  	.data(data)
 	  	.enter().append("circle")
-	  	.style("stroke", "gray")
-	  	.style("fill", "white")
+	  	.style("stroke", "black")
+	  	.style("fill", colormapping)
 	  	.attr("r", 4)
 	  	.attr("cx", function(d) { return x(d.date); })
 	  	.attr("cy", function(d) { return y(d.fqdnid);})
@@ -216,7 +176,7 @@ Template.map.rendered = function() {
 	  	.attr("x", function(d) { return x(d.date); })
 	  	.attr("y", function(d) { return y(d.fqdnid);})
 	  	.append("svg:title")
-	  	.text(function(d) { return d.desc; });; 
+	  	.text(function(d) { return d.desc; });
 	  
 
 	  	
@@ -275,8 +235,8 @@ Template.map.rendered = function() {
 	.text(function(d) { return d.desc; });*/
   
     text.selectAll("circle")
-	.style("stroke", "gray")
-	.style("fill", "white")
+	.style("stroke", "black")
+	.style("fill", colormapping)
 	.attr("r", 4)
 	.attr("cx", function(d) { return x(d.date); })
 	.attr("cy", function(d) { return y(d.fqdnid);})

@@ -1,6 +1,8 @@
 
 Deployments = new Meteor.Collection("deployments");
 
+
+
 if (Meteor.isServer) {
   Meteor.startup(function () {
     if (Deployments.find().count() === 0) {
@@ -18,7 +20,7 @@ if (Meteor.isServer) {
 	    //d.date = new Date(myDate).setHours(0);
 	    d.date = new Date(d.ts.$date).getTime();
 	    d.ts = new Date(d.ts.$date); 
-	    d.desc = d.fqdn + "\n" + d.ts + "\n" + d.project+":"+d.version;
+	    d.desc = d.environment + "\n" + d.fqdn + "\n" + d.ts + "\n" + d.project+":"+d.version + "\n" + d.result;
 	    delete d._id;
 	    
 	    Deployments.insert(d);
