@@ -146,37 +146,33 @@ Template.map.rendered = function() {
 	  
 	  text.selectAll("text")
 	  	.data(data)
-	  	.exit()
-	  	.transition()
-	  	.duration(1000)
-	  	.remove(); 
-	      
-	 text.selectAll("circle")
-	  	.style("stroke", "black")
-	  	.style("fill", colormapping)
-	  	.attr("r", 4)
-	  	.attr("cx", function(d) { return x(d.date); })
-	  	.attr("cy", function(d) { return y(d.fqdnid);})
-	  	.attr("height", 3)
-	  	.attr("width", 3)
-	  	.attr("x", function(d) { return x(d.date); })
-	  	.attr("y", function(d) { return y(d.fqdnid);});
-
-	
-	  text.selectAll("text")
-	  	.data(data)
 	  	.enter().append("circle")
 	  	.style("stroke", "black")
 	  	.style("fill", colormapping)
 	  	.attr("r", 4)
-	  	.attr("cx", function(d) { return x(d.date); })
-	  	.attr("cy", function(d) { return y(d.fqdnid);})
 	  	.attr("height", 3)
 	  	.attr("width", 3)
 	  	.attr("x", function(d) { return x(d.date); })
 	  	.attr("y", function(d) { return y(d.fqdnid);})
 	  	.append("svg:title")
 	  	.text(function(d) { return d.desc; });
+	  
+	 text.selectAll("circle")
+	        .data(data)
+	        .transition()
+	  	.duration(500)
+	  	.attr("cx", function(d) { return x(d.date); })
+	  	.attr("cy", function(d) { return y(d.fqdnid);});
+
+	  text.selectAll("circle")
+	  	.data(data)
+	  	.exit()
+	  	.transition()
+	  	.duration(500)
+	  	.attr("cy",height+margin.bottom)
+	  	.remove(); 
+	
+
 	  
 
 	  	
