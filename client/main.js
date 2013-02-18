@@ -45,6 +45,7 @@ Template.environments.environments = function () {
   });
 */
 
+var brush;
 
 Template.map.rendered = function() {
 
@@ -68,7 +69,7 @@ Template.map.rendered = function() {
 	    xAxis2 = d3.svg.axis().scale(x2).orient("bottom"),
 	    yAxis = d3.svg.axis().scale(y).orient("left");
 	 
-	var brush = $('g.x.brush').length || d3.svg.brush()
+	brush = $('g.x.brush').length || d3.svg.brush()
 	    .x(x2)
 	    .on("brush", brush);
 	 
@@ -109,7 +110,7 @@ Template.map.rendered = function() {
 
 	    
 	self.drawsomestuff = Meteor.autorun(function() {
-	  data = Deployments.find({ts: {$gte: Session.get("fromdate")}}).fetch();
+			data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}}).fetch();
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {
@@ -144,6 +145,7 @@ Template.map.rendered = function() {
 	  
 	  xaxisc.call(xAxis);
 	  
+	  // First create new elements and position them at the bottom
 	  text.selectAll("text")
 	  	.data(data)
 	  	.enter().append("circle")
@@ -152,49 +154,30 @@ Template.map.rendered = function() {
 	  	.attr("r", 4)
 	  	.attr("height", 3)
 	  	.attr("width", 3)
-	  	.attr("x", function(d) { return x(d.date); })
-	  	.attr("y", function(d) { return y(d.fqdnid);})
+	  	.attr("cy",height+margin.bottom)
+	  	//.attr("cx", function(d) { return x(d.date); })
 	  	.append("svg:title")
-	  	.text(function(d) { return d.desc; });
-	  
+	  	.text(function(d) { return d.desc + "\nfqdnid: " + d.fqdnid; });
+	 
+	 // Now position all elements, new and existing ones properly
 	 text.selectAll("circle")
 	        .data(data)
 	        .transition()
-	  	.duration(500)
+	  	.duration(700)
 	  	.attr("cx", function(d) { return x(d.date); })
 	  	.attr("cy", function(d) { return y(d.fqdnid);});
 
+	  // ... and at the same time fade out the no longer needed ones
 	  text.selectAll("circle")
 	  	.data(data)
 	  	.exit()
 	  	.transition()
-	  	.duration(500)
+	  	.duration(700)
 	  	.attr("cy",height+margin.bottom)
 	  	.remove(); 
-	
-
-	  
-
-	  	
-	  /*text.selectAll("text")
-	  	.data(data)
-	  	.enter().append("text")
-	  	.attr("x",function(d) { return x(d.date); })
-	  	.attr("y",function(d) { return y(d.fqdnid); })
-	  	.attr("dy",".71em")
-	  	// Rotating does not help so much
-	  	//.attr("transform",function(d) { return "rotate(-90 "+ x(d.date) + "," + y(d.fqdnid)+")"; })
-	  	.text(function(d) { return d.desc; });*/  
-	  
-
-
-	 
-	  /* context.append("path")
-	      .datum(data)
-	      .attr("d", area2); */
-	 
+ 
 	  // For some reason this approach does not work for xaxis2:
-	  //var xaxis2c = context.select(".x.axis")[0][0] || 
+	  //var xaxis2c = context.select(".x.axis2")[0][0] || 
 	  context.append("g")
 	      .attr("class", "x axis")
 	      .attr("transform", "translate(0," + height2 + ")")
@@ -207,11 +190,7 @@ Template.map.rendered = function() {
 	      .attr("y", -6)
 	      .attr("height", height2 + 7);
 	});
-	
-
-	//d3.json("/deployments.json", drawstuff);
-
-	  
+ 
 	
 	
   function brush() {
@@ -231,15 +210,9 @@ Template.map.rendered = function() {
 	.text(function(d) { return d.desc; });*/
   
     text.selectAll("circle")
-	.style("stroke", "black")
-	.style("fill", colormapping)
-	.attr("r", 4)
 	.attr("cx", function(d) { return x(d.date); })
 	.attr("cy", function(d) { return y(d.fqdnid);})
-	.attr("height", 3)
-	.attr("width", 3)
-	.attr("x", function(d) { return x(d.date); })
-	.attr("y", function(d) { return y(d.fqdnid);}); 
+
   } 
 
 
