@@ -7,7 +7,7 @@ var colormapping = function (d) {
 }
 // description
 var descmapping = function (d) {
-  return d.environment + "\n" + d.fqdn + "\n" + d.ts + "\n" + d.project+":"+d.version + "\n" + d.result;
+  return d.environment + "\n" + d.fqdn + "(" + d.fqdnid + ")\n" + d.ts + "\n" + d.project+":"+d.version + "\n" + d.result + "\n" + new Date(d.ts).getTime();
 }	
 
 Template.hello.rendered = function() {
@@ -110,7 +110,7 @@ Template.map.rendered = function() {
 
 	    
 	self.drawsomestuff = Meteor.autorun(function() {
-			data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}}).fetch();
+	  data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}}).fetch();
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {
@@ -125,7 +125,7 @@ Template.map.rendered = function() {
 	  
 	  yAxis.tickValues(d3.keys(myServerHash));
 	  	 
-	  x.domain(d3.extent(data.map(function(d) { return d.date; })));
+	  x.domain(d3.extent(data.map(function(d) { return (new Date(d.ts).getTime()) })));
 	  y.domain(data.map(function(d) { return d.fqdnid; }));
 	  x2.domain(x.domain());
 	  y2.domain(y.domain());
@@ -157,14 +157,14 @@ Template.map.rendered = function() {
 	  	.attr("cy",height+margin.bottom)
 	  	//.attr("cx", function(d) { return x(d.date); })
 	  	.append("svg:title")
-	  	.text(function(d) { return d.desc + "\nfqdnid: " + d.fqdnid; });
+	  	.text(function(d) { return descmapping(d) });
 	 
 	 // Now position all elements, new and existing ones properly
 	 text.selectAll("circle")
 	        .data(data)
 	        .transition()
 	  	.duration(700)
-	  	.attr("cx", function(d) { return x(d.date); })
+	  	.attr("cx", function(d) { return x(new Date(d.ts).getTime()); })
 	  	.attr("cy", function(d) { return y(d.fqdnid);});
 
 	  // ... and at the same time fade out the no longer needed ones
@@ -210,7 +210,7 @@ Template.map.rendered = function() {
 	.text(function(d) { return d.desc; });*/
   
     text.selectAll("circle")
-	.attr("cx", function(d) { return x(d.date); })
+	.attr("cx", function(d) { return x(new Date(d.ts).getTime()); })
 	.attr("cy", function(d) { return y(d.fqdnid);})
 
   } 
