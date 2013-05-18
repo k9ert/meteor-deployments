@@ -20,28 +20,6 @@ Template.hello.greeting = function () {
 
 
 
-//Meteor.startup(function () {
-// HELPER: #key_value
-//
-// Usage: {{#key_value obj}} Key: {{key}} // Value: {{value}} {{/key_value}}
-//
-// Iterate over an object, setting 'key' and 'value' for each property in
-// the object.
-Handlebars.registerHelper("key_value", function(obj, fn) {
-    var buffer = "",
-        key;
- 
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            buffer += fn({key: key, value: obj[key]});
-        }
-    }
- 
-    return buffer;
-});
-
-//});
-
  
 
 
