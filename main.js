@@ -3,8 +3,10 @@ Deployments = new Meteor.Collection("deployments");
 
 
 
+
 if (Meteor.isServer) {
   Meteor.startup(function () {
+  		
     if (Deployments.find().count() === 0) {
     	    Meteor.http.get("http://puppi-deployments.meteor.com/deployments.json", function(error,results){
 	  var i = 1;
@@ -35,6 +37,5 @@ if (Meteor.isServer) {
    return Deployments.find(); // everything
   } ); */
 }
-
 
 

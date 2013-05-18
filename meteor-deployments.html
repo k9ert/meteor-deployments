@@ -17,6 +17,23 @@
   The second X-Axis is a brushing-area. So, brush it!!<br/>
 </template>
 
+<template name="environments">
+  <h3>environments</h3>
+  <div class="envs">
+    {{#each environments}}
+      {{> environment}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="environment">
+  <div class="environment {{selected}}">
+    <span class="name">{{name}}</span>
+    <span class="score">{{selected}}</span>
+  </div>
+</template>
+
+
 <template name="dtp">
   <div class="datetimepicker" id="datetimepicker" data-date="12-03-2012" data-date-format="dd-mm-yyyy">
    <input class="dtpif" size="16" type="text" value="{{fromdate}}" readonly>
@@ -36,17 +53,3 @@
   {{/constant}}
 </template>
 
-<template name="environments">
-  <div class="environments">
-    {{#each environments}}
-      {{> environment}}
-    {{/each}}
-  </div>
-</template>
-
-<template name="environment">
-  <div class="environment {{selected}}">
-    <span class="name">{{environment}}</span>
-    <span class="servercount">{{servercount}}</span>
-  </div>
-</template>

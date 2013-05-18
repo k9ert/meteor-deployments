@@ -21,3 +21,7 @@ path {
   fill-opacity: .125;
   shape-rendering: crispEdges;
 }
+
+.environment.selected {
+    background-color: yellow;
+}

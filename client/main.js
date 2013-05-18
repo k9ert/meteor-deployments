@@ -1,4 +1,4 @@
-Deployments = new Meteor.Collection("deployments");
+//Deployments = new Meteor.Collection("deployments");
 
 // some mappings
 // color
@@ -20,19 +20,30 @@ Template.hello.greeting = function () {
 
 
 
+//Meteor.startup(function () {
+// HELPER: #key_value
+//
+// Usage: {{#key_value obj}} Key: {{key}} // Value: {{value}} {{/key_value}}
+//
+// Iterate over an object, setting 'key' and 'value' for each property in
+// the object.
+Handlebars.registerHelper("key_value", function(obj, fn) {
+    var buffer = "",
+        key;
+ 
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            buffer += fn({key: key, value: obj[key]});
+        }
+    }
+ 
+    return buffer;
+});
+
+//});
 
  
-Template.environments.environments = function () {
-  var allDepls = Deployments.find().fetch();
-  var allEnv = [];
-  allDepls.forEach( function(d) {
-   if (allEnv.indexOf(d.environment) < 0) {
-     allEnv.push(d);
-   }
-   //console.log(allEnv);
-   return allEnv;
-  } );
-};
+
 
 /*  
   Template.hello.events({
