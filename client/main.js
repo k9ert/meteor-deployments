@@ -114,7 +114,7 @@ Template.map.rendered = function() {
 	 
 	  yAxis.tickValues(null);
 	  
-	  yAxis.tickValues(d3.keys(myServerHash));
+	  yAxis.tickValues(d3.values(myServerHash));
 	  	 
 	  x.domain(d3.extent(data.map(function(d) { return (new Date(d.ts).getTime()) })));
 	  y.domain(data.map(function(d) { return d.fqdnid; }));

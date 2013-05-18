@@ -38,7 +38,7 @@ Template.dtp.todate = function () {
   return Session.get("todate");	  
 }
 
-Template.environments.environments = function () {
+Template.environments.rendered = function() {
   if (! Session.get("envs")) {
     data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}}).fetch();
     var myEnvHash= {};
@@ -55,7 +55,11 @@ Template.environments.environments = function () {
     }
     Session.set("envs",myEnvs);
   }
-  return Session.get("envs");	  
+}
+
+Template.environments.environments = function () {
+
+	return Session.get("envs") ? Session.get("envs") : [] ;	  
 }
 
 Template.environments.environments2 = function () {
