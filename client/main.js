@@ -1,4 +1,4 @@
-//Deployments = new Meteor.Collection("deployments");
+Deployments = new Meteor.Collection("deployments");
 
 // some mappings
 // color
@@ -99,12 +99,14 @@ Template.map.rendered = function() {
 
 	    
 	self.drawsomestuff = Meteor.autorun(function() {
-	  data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}}).fetch();
+	  selecteEnvsFunction = function(e) { if (e.selected) return e.name } 
+          selectedEnvs = Template.environments.environments().map(selecteEnvsFunction);
+
+	  data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}, environment: { $in: selectedEnvs}}).fetch();
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {
 	    if (! myServerHash[d.fqdn]) {
-	      console.log(d.fqdn);
 	      myServerHash[d.fqdn] = i++;
 	    }
 	    d.fqdnid = myServerHash[d.fqdn];
