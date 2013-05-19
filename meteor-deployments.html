@@ -3,6 +3,20 @@
 </head>
 
 <body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">puppi-deployments</a>
+        </div>
+      </div>
+    </div>
+    
+    
   <div id="outer">
     <div class="well well-large">
 {{> hello}}
@@ -26,7 +40,9 @@
   <div class="environments">
   <div class="btn-group" data-toggle="buttons-checkbox">
     {{#each environments}}
+      {{#constant}}
       {{> environment}}
+      {{/constant}}
     {{/each}}
   </div>
   </div>
@@ -34,7 +50,7 @@
 
 <template name="environment">
 
-    <button type="button" class="btn btn-primary" >{{name}} {{selected}}</button>
+    <button id="env-{{name}}" type="button" class="btn btn-primary" >{{name}} {{selected}}</button>
 
 </template>
 

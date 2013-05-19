@@ -1,5 +1,7 @@
 Deployments = new Meteor.Collection("deployments");
 
+
+
 // some mappings
 // color
 var colormapping = function (d) {
@@ -11,7 +13,8 @@ var descmapping = function (d) {
 }	
 
 Template.hello.rendered = function() {
-$('.alert').text("This is the alert div");	
+  //$('.alert').text("This is the alert div");
+  $(".alert").alert('close')
 }
 	
 Template.hello.greeting = function () {

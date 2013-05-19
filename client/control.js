@@ -52,6 +52,7 @@ Template.environments.rendered = function() {
     i=0;
     for (e in myEnvHash) {
        myEnvs[i++]={name:e,selected:true};
+       $("#env-"+e).button('toggle')	
     }
     Session.set("envs",myEnvs);
   }
@@ -75,10 +76,16 @@ Template.environment.name = function() {
   return this.name;	
 }
 
+Template.environment.rendered = function(e) {
+    $('.btn-group').button();
+	console.log("#env"+  JSON.stringify(e));
+  $("#env-"+this.name).button('toggle')	
+}
+
 Template.environment.events({
   'click': function () {
     console.log("clicked "+ JSON.stringify(this));
-    $().button('toggle')
+    
     envs = Session.get("envs");
     for (e in envs) {
       if (envs[e].name === this.name) {
@@ -86,5 +93,7 @@ Template.environment.events({
       }
     }
     Session.set("envs",envs);
+    console.log("#env"+  this.name);
+    $("#env-"+this.name).button('toggle')	
    }
 });
