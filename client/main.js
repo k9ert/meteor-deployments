@@ -207,6 +207,4 @@ Template.map.rendered = function() {
 
   } 
 
-
-
   }
