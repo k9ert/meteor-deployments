@@ -1,10 +1,18 @@
 /* CSS declarations go here */
 
+#outer {
+    width: 80pc;
+    
+    margin:  30px auto;    
+}
  
 svg {
   font: 10px sans-serif;
 }
  
+environments {
+  width: 200px;
+}
 path {
   fill: steelblue;
 }
@@ -22,6 +30,13 @@ path {
   shape-rendering: crispEdges;
 }
 
+.environment {
+  margin-left: 40px;
+  margin-bottom: 4px;
+}
+
+
 .environment.selected {
+   width: 200px;
     background-color: yellow;
 }

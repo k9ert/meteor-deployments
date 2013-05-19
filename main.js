@@ -2,7 +2,7 @@
 Deployments = new Meteor.Collection("deployments");
 
 
-
+//$('.nav-tabs').button()
 
 if (Meteor.isServer) {
   Meteor.startup(function () {

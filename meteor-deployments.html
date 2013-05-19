@@ -3,10 +3,14 @@
 </head>
 
 <body>
+  <div id="outer">
+    <div class="well well-large">
 {{> hello}}
 {{> dtp}}
 {{> environments}}
 {{> map}}
+  </div>
+  </div>
 </body>
 
 
@@ -19,18 +23,19 @@
 
 <template name="environments">
   <h3>environments</h3>
-  <div class="envs">
+  <div class="environments">
+  <div class="btn-group" data-toggle="buttons-checkbox">
     {{#each environments}}
       {{> environment}}
     {{/each}}
   </div>
+  </div>
 </template>
 
 <template name="environment">
-  <div class="environment {{selected}}">
-    <span class="name">{{name}}</span>
-    <span class="score">{{selected}}</span>
-  </div>
+
+    <button type="button" class="btn btn-primary" >{{name}} {{selected}}</button>
+
 </template>
 
 

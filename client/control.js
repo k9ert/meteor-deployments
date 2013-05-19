@@ -78,6 +78,7 @@ Template.environment.name = function() {
 Template.environment.events({
   'click': function () {
     console.log("clicked "+ JSON.stringify(this));
+    $().button('toggle')
     envs = Session.get("envs");
     for (e in envs) {
       if (envs[e].name === this.name) {
