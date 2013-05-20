@@ -44,9 +44,9 @@ Template.map.rendered = function() {
 	// copied ... reason?!
 	this.node = this.find('#screen');
  
-	var margin = {top: 10, right: 10, bottom: 100, left: 180},
-	    margin2 = {top: 430, right: 10, bottom: 20, left: 180},
-	    width = 960 - margin.left - margin.right,
+	var margin = {top: 10, right: 110, bottom: 100, left: 180},
+	    margin2 = {top: 430, right: 110, bottom: 20, left: 180},
+	    width = $("#outer").width() - margin.left - margin.right,
 	    height = 500 - margin.top - margin.bottom,
 	    height2 = 500 - margin2.top - margin2.bottom;
 	 
