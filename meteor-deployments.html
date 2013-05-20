@@ -3,7 +3,25 @@
 </head>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+    
+{{> header}}
+
+  <div id="outer">
+    <div class="well well-large">
+{{> hello}}
+{{> dtp}}
+{{> environments}}
+{{> map}}
+    </div>
+  </div>
+
+
+</body>
+
+<template name="header">
+
+   <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -15,19 +33,8 @@
         </div>
       </div>
     </div>
-    
-    
-  <div id="outer">
-    <div class="well well-large">
-{{> hello}}
-{{> dtp}}
-{{> environments}}
-{{> map}}
-  </div>
-  </div>
 
-
-</body>
+</template>
 
 
 
