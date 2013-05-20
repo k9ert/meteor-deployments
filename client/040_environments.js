@@ -1,7 +1,6 @@
 
 Template.environments.rendered = function() {
   if (! Session.get("envs")) {
-  	  console.log("session dates are : " +  Session.get("fromdate") + Session.get("todate"));
     data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}}).fetch();
     var myEnvHash= {};
     var i=0;
@@ -18,6 +17,11 @@ Template.environments.rendered = function() {
     }
     Session.set("envs",myEnvs);
   }
-  console.log("session envs is "+ JSON.stringify(Session.get("envs")));
   return Session.get("envs")
+
+}
+
+
+Template.environments.environments = function () {
+  return Session.get("envs") ? Session.get("envs") : [] ;	  
 }

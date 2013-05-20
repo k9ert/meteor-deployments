@@ -29,5 +29,8 @@ Template.header.depl_count_selected = function() {
 }
 
 
-
-console.log("We have nof "+ depl_count_selected() + "deployments");
+Template.hello.rendered = function() {
+  $('.alert').text("Wait, until the data is loaded. Due to your Network-connection this can take up to 30 seconds ...");
+  //$(".alert").alert('close')
+}
+	

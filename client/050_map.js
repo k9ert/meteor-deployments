@@ -23,14 +23,6 @@ var descmapping = function (d) {
   return d.environment + "\n" + d.fqdn + "(" + d.fqdnid + ")\n" + d.ts + "\n" + d.project+":"+d.version + "\n" + d.result + "\n" + new Date(d.ts).getTime();
 }	
 
-Template.hello.rendered = function() {
-  //$('.alert').text("This is the alert div");
-  $(".alert").alert('close')
-}
-	
-Template.hello.greeting = function () {
-  return "Welcome! We have "+Deployments.find().count()+" deployments to explore";
-};
 
 var brush;
 
@@ -97,10 +89,8 @@ Template.map.rendered = function() {
 
 	    
 	self.drawsomestuff = Meteor.autorun(function() {
-	  selecteEnvsFunction = function(e) { if (e.selected) return e.name } 
-          selectedEnvs = Template.environments.environments().map(selecteEnvsFunction);
-
-	  data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}, environment: { $in: selectedEnvs}}).fetch();
+	  
+	  data = Deployments.find(search_obj_selected()).fetch();
 	  var i = 1;
 	  var myServerHash= {};
 	  data.forEach(function(d) {

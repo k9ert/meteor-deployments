@@ -80,8 +80,7 @@ Template.environment.name = function() {
 }
 
 Template.environment.rendered = function(e) {
-    $('.btn-group').button();
-	console.log("#env"+  JSON.stringify(e));
+  $('.btn-group').button();
   $("#env-"+this.name).button('toggle')	
 }
 
