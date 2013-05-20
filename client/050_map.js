@@ -1,5 +1,16 @@
-Deployments = new Meteor.Collection("deployments");
 
+
+
+/*  
+  Template.hello.events({
+    'click input' : function () {
+      // template data, if any, is available in 'this'
+      if (typeof console !== 'undefined')
+        console.log("You pressed the button");
+
+    }
+  });
+*/
 
 
 // some mappings
@@ -20,22 +31,6 @@ Template.hello.rendered = function() {
 Template.hello.greeting = function () {
   return "Welcome! We have "+Deployments.find().count()+" deployments to explore";
 };
-
-
-
- 
-
-
-/*  
-  Template.hello.events({
-    'click input' : function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
-
-    }
-  });
-*/
 
 var brush;
 

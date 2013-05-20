@@ -20,6 +20,8 @@ Template.dtp.rendered = function() {
     });
     this.dp.datepicker('setDate', new Date(2012,11,11));
     $('.dtpif').attr("value", new Date(2012,11,11));
+
+
     
     // -------------------------------------------
     
@@ -33,11 +35,14 @@ Template.dtp.rendered = function() {
       Session.set("envs",null);
       $('#datetimepicker2').datepicker('hide');
       $('.dtpif2').attr("value", ev.date);
+      
       // doesn't work
       // brush.clear();
     });
     this.dp2.datepicker('setDate', new Date(2013,11,11));
-    $('.dtpif2').attr("value",  new Date(2013,11,11));
+    $('.dtpif2').attr("value", new Date(2013,11,11));
+
+
     this.dp_created=true;
   }
   
@@ -55,25 +60,6 @@ Template.dtp.todate = function () {
   return Session.get("todate");	  
 }
 
-Template.environments.rendered = function() {
-  if (! Session.get("envs")) {
-    data = Deployments.find({ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}}).fetch();
-    var myEnvHash= {};
-    var i=0;
-    data.forEach(function(d) {
-      if (! myEnvHash[d.environment]) {
-	myEnvHash[d.environment] = i++;
-      }
-    });
-    var myEnvs = [];
-    i=0;
-    for (e in myEnvHash) {
-       myEnvs[i++]={name:e,selected:true};
-       $("#env-"+e).button('toggle')	
-    }
-    Session.set("envs",myEnvs);
-  }
-}
 
 Template.environments.environments = function () {
 
