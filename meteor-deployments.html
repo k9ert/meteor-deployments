@@ -9,13 +9,13 @@
 
   <div id="outer">
       {{> header}}
-    <div class="well well-large">
-
+    <div class="well well-large" id="browser">
 {{> hello}}
 {{> dtp}}
 {{> environments}}
 {{> map}}
     </div>
+    {{> info}}
   </div>
 
 
@@ -23,7 +23,7 @@
 
 <template name="header">
 
-   <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -36,8 +36,11 @@
             <p class="navbar-text pull-right">
               <span class0"brand"> {{depl_count_selected}} / {{depl_count_all}} Hits </span>
             </p>
-          </div>
-          
+            <ul class="nav">
+              <li class="active" id="browser_link"><a href="#browser">Browser</a></li>
+              <li id="about_link"><a href="#about">About</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>

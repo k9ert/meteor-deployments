@@ -1,0 +1,150 @@
+<head>
+  <title>meteor-deployments</title>
+</head>
+
+<body>
+
+  
+
+</body>
+
+<template name="info">
+
+<div class="container-fluid" id="info">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="hero-unit">
+            <h1>Deployment Browser</h1>
+            <p>You have lots of applications in lots of versions and you deploy 
+            them in lots of environments?! How do keep track of all the difference
+            deployments? This is where this deployment-browser comes into play.
+            It's based on <a href="http://meteor.com/">Meteor</a>
+            /<a href="https://github.com/oortcloud/meteorite">Meteorite</a>, 
+            <a href="http://d3js.org/">d3</a> 
+            and <a href="http://twitter.github.io/bootstrap/">bootstrap</a>. 
+            The deployment-data is coming out of a mongoDB. It's open-source under the apache-license and available at 
+            <a href="https://github.com/k9ert/meteor-deployments">Github</a></p>
+            <h2>Installation</h2>
+            </p>Here is how to install the browser:</p>
+<pre>
+$ apt-get install nodejs npm
+$ sudo -H npm install -g meteorite
+$ git clone https://github.com/k9ert/meteor-deployments.git
+$ cd meteor-deployments
+$ export MONGO_URL=mongodb://somemongodb.somedomain.com:27017/deployments
+
+</pre>
+            <h2>Deployment-Reporting</h2>
+            <p>In order to get Data in your MongoDB, you either do your own and push Data like this in the collection "deployments" in a database called "deployments":</p>
+<pre>
+{
+    _id: ObjectId("50bc72d875331f9b9d398c25"),
+    ts: ISODate("2012-12-03T09:37:28%:z"),
+    result: "OK",
+    fqdn: "int2-udp1.somedomain.com",
+    project: "udp.ui.web",
+    source: "https://repository.somedomain.com/release/com/somedomain/udp/udp-ui-web",
+    tag: "20121203-043703",
+    version: "0.4.0",
+    artifact: "udp-ui-web",
+    warfile: "udp-ui-web-0.4.0.war",
+    environment: "int2"
+}
+</pre>
+            <p>If you don't want to implement the reporting, you can install mongodb-clients and use something puppi and/or this script:
+<pre>
+#!/bin/bash
+set +x
+# report_mongodb.sh - Made for Puppi
+# This script sends a summary to a mongodb defined in $1
+# e.g. somemongohost/dbname
+
+# Sources common header for Puppi scripts
+. $(dirname $0)/header || exit 10
+
+
+if [ "$EXITCRIT" = "1" ] ; then
+    proposed_exit=2
+fi
+
+if [ "$EXITWARN" = "1" ] ; then
+    proposed_exit=1
+fi
+
+# check prerequisites
+mongo -version > /dev/null
+if [ $? -ne 0 ]; then
+        echo "mongo-client is not installed, aborting"
+        exit $proposed_exit
+fi
+
+fqdn=$(facter fqdn)
+
+environment=$(facter environment -p)
+
+# something like mongodb://someuser:hispassword@somehost/somedb
+mongourl=$1
+
+if [[ ! $mongourl =~ "mongodb://" ]]; then
+  echo "WARNING: mongourl invalid! Please use a valid monurl!"
+  exit $proposed_exit
+fi
+
+if [[ $mongourl =~ @ ]]; then
+  # ok we have to deal with passwords
+  # you HAVE to provide a password if you provide a user
+  mongodb=`echo $mongourl | sed 's/.*@//'`
+  mongouser=`echo $mongourl | sed 's/mongodb:\/\///' | sed 's/:.*//' `
+  mongopassword=`echo $mongourl | sed 's/mongodb:\/\///' | sed 's/[^:]*://' | sed 's/@.*//' `
+  mongoarguments="--username $mongouser --password $mongopassword"
+else
+  mongodb=`echo $mongourl | sed 's/mongodb:\/\///'` 	
+fi
+
+result=$(grep result $logdir/$project/$tag/summary | awk '{ print $NF }')
+summary=$(cat $logdir/$project/$tag/summary)
+
+mcmd="db.deployments.insert({ts:new Date(),result:\"${result}\",fqdn:\"${fqdn}\",project:\"${project}\",source:\"${source}\",tag:\"${tag}\",version:\"${version}\",artifact:\"${artifact}\",testmode:\"${testmode}\",warfile:\"${warfile}\",environment:\"${environment}\"}); quit(0)"
+
+
+mongo $mongoarguments $mongodb --eval "$mcmd"
+
+# Now do a reporting to enable "most-recent-versions on all servers"
+
+read -r -d '' mcmd <<'EOF'
+var map = function() {
+  project=this.project ;
+  emit( this.fqdn +":"+ this.project,  {project:this.project, fqdn:this.fqdn, ts:this.ts,version:this.version,environment:this.environment}  );
+};
+var reduce = function(k,vals) {
+  result = vals[0];
+  vals.forEach(function(val) { if (val.ts > result.ts) result=val } ) ;
+  return result;
+};
+db.deployments.mapReduce(
+  map,
+  reduce,
+  {out:{replace:"versions"}})
+EOF
+
+mongo $mongoarguments $mongodb --eval "$mcmd"
+
+exit $proposed_exit
+</pre>
+This script is part of puppi, which is a bash framework for deployments provisioned
+by puppet.
+            <p><a href="http://www.example42.com/?q=Puppi_A_Puppet_module_for_Deployment_Automation" class="btn btn-primary btn-large">Learn more about puppi »</a></p>
+          </div>
+          </div><!--/row-->
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>© k9ert 2013</p>
+      </footer>
+
+    </div>
+    
+</template>

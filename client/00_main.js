@@ -19,14 +19,6 @@ var depl_count_selected = function () {
   return Deployments.find().count();
 }
 
-Template.header.depl_count_all = function() {
-  return depl_count_all();
-}
-
-Template.header.depl_count_selected = function() {
-	console.log("found: "+ Deployments.find(search_obj_selected()).count());
-  return Deployments.find(search_obj_selected()).count();
-}
 
 
 Template.hello.rendered = function() {
