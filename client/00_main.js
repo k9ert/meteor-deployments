@@ -17,7 +17,7 @@ var depl_count_all = function () {
 
 var search_obj_selected = function () {
   search_obj = {ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}, environment: { $in: selected_envs()}, result: { $in: selected_results()}}
-  console.log(JSON.stringify(search_obj));
+  //console.log(JSON.stringify(search_obj));
   return search_obj;
 }
 

@@ -32,7 +32,6 @@ Template.results.events({
       }
     }
     Session.set("results",results);
-    console.log("#env"+  this.name);
     $("#env-"+this.name).button('toggle')	
    }
 });

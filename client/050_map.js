@@ -41,7 +41,7 @@ Template.map.rendered = function() {
 	 
 	var x = d3.time.scale().range([0, width]),
 	    x2 = d3.time.scale().range([0, width]),
-	    y = d3.scale.ordinal().rangeBands([height, 0]),
+	    y = d3.scale.ordinal().rangePoints([height, 0]),
 	    y2 = d3.scale.linear().range([height2, 0]);
 	 
 	var xAxis = d3.svg.axis().scale(x).orient("bottom"),
@@ -128,7 +128,7 @@ Template.map.rendered = function() {
 	  	.enter().append("circle")
 	  	.style("stroke", "grey")
 	  	.style("fill", colormapping)
-	  	.attr("r", 6)
+	  	.attr("r", 4)
 	  	.attr("height", 3)
 	  	.attr("width", 3)
 	  	.attr("cy",height+margin.bottom)
@@ -143,7 +143,7 @@ Template.map.rendered = function() {
 	  	.duration(700)
 	  	.style("fill", colormapping)
 	  	.attr("cx", function(d) { return x(new Date(d.ts).getTime()); })
-	  	.attr("cy", function(d) { return y(d.fqdnid);});
+	  	.attr("cy", function(d) { return y(d.fqdnid-0.5);});
 	  	
 
 	  // ... and at the same time fade out the no longer needed ones
