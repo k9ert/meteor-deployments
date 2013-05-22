@@ -8,9 +8,41 @@
 
 </body>
 
+<template name="about">
+<div class="container-fluid" id="info">
+{{> sdp}}
+{{> other_stuff}}
+{{> info}}
+
+
+      <hr>
+
+      <footer>
+        <p>© k9ert 2013</p>
+      </footer>
+
+</div>
+      
+</template>
+
+
+<template name="sdp">
+
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="hero-unit">
+            <p>This is a demo-site for a deployment-browser which is probably one of the minor important 
+            parts of a Service Delivery Platform.</p>
+            <iframe src="http://player.vimeo.com/video/46125904" width="500" height="375" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> <p><a href="http://vimeo.com/46125904">What is a Service Delivery Platform?</a> from <a href="http://vimeo.com/dev2ops">dev2ops.org</a> on <a href="http://vimeo.com">Vimeo</a></p>
+            <p>Here are other important possible building-blocks of your service-delivery-platform. 
+           </div><!--/row-->
+        </div><!--/span-->
+      </div><!--/row-->
+</template>
+
 <template name="info">
 
-<div class="container-fluid" id="info">
+
       <div class="row-fluid">
         <div class="span12">
           <div class="hero-unit">
@@ -31,8 +63,9 @@ $ apt-get install nodejs npm
 $ sudo -H npm install -g meteorite
 $ git clone https://github.com/k9ert/meteor-deployments.git
 $ cd meteor-deployments
+# connect to your 
 $ export MONGO_URL=mongodb://somemongodb.somedomain.com:27017/deployments
-
+$ mrt
 </pre>
             <h2>Deployment-Reporting</h2>
             <p>In order to get Data in your MongoDB, you either do your own and push Data like this in the collection "deployments" in a database called "deployments":</p>
@@ -131,20 +164,63 @@ mongo $mongoarguments $mongodb --eval "$mcmd"
 
 exit $proposed_exit
 </pre>
-This script is part of puppi, which is a bash framework for deployments provisioned
-by puppet.
-            <p><a href="http://www.example42.com/?q=Puppi_A_Puppet_module_for_Deployment_Automation" class="btn btn-primary btn-large">Learn more about puppi »</a></p>
+<p>This script is part of puppi, which is a bash framework for deployments provisioned
+by puppet.</p>
+
+            <p><a href="https://github.com/k9ert/meteor-deployments" class="btn btn-primary btn-large">View the source »</a></p>
           </div>
           </div><!--/row-->
         </div><!--/span-->
       </div><!--/row-->
 
-      <hr>
 
-      <footer>
-        <p>© k9ert 2013</p>
-      </footer>
 
-    </div>
+
     
+</template>
+
+<template name="other_stuff">
+<div class="row-fluid">
+            <div class="span3">
+              <h2>Provisioning</h2>
+              <p>Puppet is a Provisioning tool to automate the installation of your servers. If you're in hurry and want to avoid
+              the puppetmaster-infrastructure, you might want to use ansible for provisioning. </p>
+              <p><a class="btn" href="https://puppetlabs.com/puppet/what-is-puppet/">Learn more »</a></p>
+            </div><!--/span-->
+            <div class="span3">
+              <h2>Deployment</h2>
+              <p>Puppi is a deployment framework built with bash and provisioned with puppet. It can be used in 
+              <a href="https://groups.google.com/forum/?fromgroups#!topic/example42-puppet-modules/aI0WVNqaweY">numerous ways</a> 
+              to fullfill your deployment-needs.An alternative might be e.g. 
+              <a href="https://github.com/capistrano/capistrano">capistrano</a>.</p>
+              <p><a class="btn" href="http://www.example42.com/?q=Puppi_A_Puppet_module_for_Deployment_Automation">Learn more »</a></p>
+            </div><!--/span-->
+            <div class="span3">
+              <h2>Log-aggregation</h2>
+              <p>Logstash can ship your logs towards an elasticsearch-backend and Kibana 
+              can help you to visualize them.</p>
+              <p><a class="btn" href="http://spredzy.wordpress.com/2013/01/25/powerful-analysis-tool-using-logstash-elasticsearch-kibana/">Learn more »</a></p>
+            </div><!--/span-->
+            <div class="span3">
+              <h2>artifact-repository</h2>
+              <p><a href="http://www.jfrog.com/home/v_artifactory_opensource_overview">artifactory</a> 
+              or <a href="http://www.sonatype.org/nexus/">nexus</a> can store your artifacts and expose them again.</p>
+              <p><a class="btn" href="http://blog.sonatype.com/people/2009/04/what-is-a-repository/">Learn more »</a></p>
+            </div><!--/span-->
+</div>
+<div class="row-fluid">
+            <div class="span3">
+              <h2>Orchestration</h2>
+              <p>There are always things which need to be done on your servers, maybe in an orchestrated way. 
+              Deployments, maintenance-tasks or implementing worakrounds for urgent issues on more than one server.
+              For such stuff <a href="https://puppetlabs.com/mcollective/introduction/">mcollective</a> and/or <a href="http://ansible.cc/">ansible</a> are very usefull.</p>
+              <p><a class="btn" href="http://kibana.org/">View details »</a></p>
+            </div><!--/span-->
+            <div class="span3">
+              <h2>Continous Integration</h2>
+              <p>There are reoccuring tasks in the development-space and you want to automate them. Jenkins is a good tool to do that.</p>
+              <p><a class="btn" href="https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins">Learn more »</a></p>
+            </div><!--/span-->
+</div>
+</div>
 </template>

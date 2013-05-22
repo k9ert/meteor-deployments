@@ -15,7 +15,7 @@
 {{> environments}}
 {{> map}}
     </div>
-    {{> info}}
+    {{> about}}
   </div>
 
 
@@ -55,47 +55,4 @@
   The second X-Axis is a brushing-area. So, brush it!!<br/>
 </template>
 
-<template name="dtp">
-  {{#constant}}
-  <div style="display: -webkit-box;">
-  <div class="datetimepicker" id="datetimepicker" data-date="01-12-2012" data-date-format="dd-mm-yyyy">
-    <input class="dtpif" size="16" type="text" value="01-12-2012" readonly> 
-    <span class="add-on"><i class="icon-th"></i></span>
-  </div>
-
-  &nbsp;<span style="font-size: 50px"> &rarr;</span>&nbsp;&nbsp;
-  
-  <div class="datetimepicker" id="datetimepicker2" data-date="01-03-2013" data-date-format="dd-mm-yyyy">
-   <input class="dtpif2" size="16" type="text" value="07-02-2013" readonly>
-    <span class="add-on"><i class="icon-th"></i></span>
-  </div>
-  </div>
-  {{/constant}}
-</template>
-
-<template name="environments">
-  <div class="environments">
-  <div class="btn-group" data-toggle="buttons-checkbox">
-    {{#each environments}}
-      {{#constant}}
-      {{> environment}}
-      {{/constant}}
-    {{/each}}
-  </div>
-  </div>
-</template>
-
-<template name="environment">
-
-    <button id="env-{{name}}" type="button" class="btn btn-primary" >{{name}} {{selected}}</button>
-
-</template>
-
-
-<template name='map'>
-  {{#constant}}
-    <svg id='screen' width='100%' >    
-    </svg>
-  {{/constant}}
-</template>
 
