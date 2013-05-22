@@ -1,10 +1,14 @@
 Deployments = new Meteor.Collection("deployments");
 
+var selected_function = function(e) { if (e.selected) return e.name } 
+
 var selected_envs = function() {
-  selecteEnvsFunction = function(e) { if (e.selected) return e.name } 
-  return (Session.get("envs") ? Session.get("envs") : []).map(selecteEnvsFunction);
+  return (Session.get("envs") ? Session.get("envs") : []).map(selected_function);
 }
 
+var selected_results = function() {
+  return (Session.get("results") ? Session.get("results") : []).map(selected_function);
+}
 
 
 var depl_count_all = function () {
@@ -12,7 +16,9 @@ var depl_count_all = function () {
 }
 
 var search_obj_selected = function () {
-  return {ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}, environment: { $in: selected_envs()}}
+  search_obj = {ts: {$gte: Session.get("fromdate"), $lte : Session.get("todate")}, environment: { $in: selected_envs()}, result: { $in: selected_results()}}
+  console.log(JSON.stringify(search_obj));
+  return search_obj;
 }
 
 var depl_count_selected = function () {

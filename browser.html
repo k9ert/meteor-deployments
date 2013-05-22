@@ -31,9 +31,15 @@
 </template>
 
 <template name="environment">
-
     <button id="env-{{name}}" type="button" class="btn btn-primary" >{{name}} {{selected}}</button>
+</template>
 
+<template name="results">
+  <div class="btn-group" data-toggle="buttons-checkbox">
+    <button id="ERROR" type="button" class="btn btn-danger btn-primary" >ERROR</button>
+    <button id="WARNING" type="button" class="btn btn-warning btn-primary" >WARING</button>
+    <button id="OK" type="button" class="btn btn-success btn-primary" >OK</button>
+  </div>
 </template>
 
 

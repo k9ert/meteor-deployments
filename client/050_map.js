@@ -16,7 +16,7 @@
 // some mappings
 // color
 var colormapping = function (d) {
-  return d.result == "OK" ? "green" : d.result == "WARNING" ? "yellow" : "red"; 
+	return d.result == "OK" ? "green" : d.result == "WARNING" ? "yellow" : d.result == "ERROR" ? "red" : "blue"; 
 }
 // description
 var descmapping = function (d) {
@@ -124,11 +124,11 @@ Template.map.rendered = function() {
 	  
 	  // First create new elements and position them at the bottom
 	  text.selectAll("text")
-	  	.data(data)
+	  	.data(data, function(d) { return d._id; })
 	  	.enter().append("circle")
-	  	.style("stroke", "black")
+	  	.style("stroke", "grey")
 	  	.style("fill", colormapping)
-	  	.attr("r", 4)
+	  	.attr("r", 6)
 	  	.attr("height", 3)
 	  	.attr("width", 3)
 	  	.attr("cy",height+margin.bottom)
@@ -138,15 +138,17 @@ Template.map.rendered = function() {
 	 
 	 // Now position all elements, new and existing ones properly
 	 text.selectAll("circle")
-	        .data(data)
+	        .data(data, function(d) { return d._id; })
 	        .transition()
 	  	.duration(700)
+	  	.style("fill", colormapping)
 	  	.attr("cx", function(d) { return x(new Date(d.ts).getTime()); })
 	  	.attr("cy", function(d) { return y(d.fqdnid);});
+	  	
 
 	  // ... and at the same time fade out the no longer needed ones
 	  text.selectAll("circle")
-	  	.data(data)
+	  	.data(data, function(d) { return d._id; })
 	  	.exit()
 	  	.transition()
 	  	.duration(700)
