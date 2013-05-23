@@ -10,9 +10,10 @@
 
 <template name="about">
 <div class="container-fluid" id="info">
+{{> info}}
 {{> sdp}}
 {{> other_stuff}}
-{{> info}}
+
 
 
       <hr>
@@ -23,21 +24,6 @@
 
 </div>
       
-</template>
-
-
-<template name="sdp">
-
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="hero-unit">
-            <p>This is a demo-site for a deployment-browser which is probably one of the minor important 
-            parts of a Service Delivery Platform.</p>
-            <iframe src="http://player.vimeo.com/video/46125904" width="500" height="375" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> <p><a href="http://vimeo.com/46125904">What is a Service Delivery Platform?</a> from <a href="http://vimeo.com/dev2ops">dev2ops.org</a> on <a href="http://vimeo.com">Vimeo</a></p>
-            <p>Here are other important possible building-blocks of your service-delivery-platform. 
-           </div><!--/row-->
-        </div><!--/span-->
-      </div><!--/row-->
 </template>
 
 <template name="info">
@@ -165,9 +151,8 @@ mongo $mongoarguments $mongodb --eval "$mcmd"
 exit $proposed_exit
 </pre>
 <p>This script is part of puppi, which is a bash framework for deployments provisioned
-by puppet.</p>
+by puppet. If you don't want to use puppi, it's probably easy to modify it approriately.</p>
 
-            <p><a href="https://github.com/k9ert/meteor-deployments" class="btn btn-primary btn-large">View the source »</a></p>
           </div>
           </div><!--/row-->
         </div><!--/span-->
@@ -178,6 +163,23 @@ by puppet.</p>
 
     
 </template>
+
+
+<template name="sdp">
+
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="hero-unit">
+            <p>This is a demo-site for a deployment-browser which is probably one of the minor important 
+            parts of a Service Delivery Platform.</p>
+            <iframe src="http://player.vimeo.com/video/46125904" width="500" height="375" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> <p><a href="http://vimeo.com/46125904">What is a Service Delivery Platform?</a> from <a href="http://vimeo.com/dev2ops">dev2ops.org</a> on <a href="http://vimeo.com">Vimeo</a></p>
+            <p>Here are other important possible building-blocks of your service-delivery-platform. 
+           </div><!--/row-->
+        </div><!--/span-->
+      </div><!--/row-->
+</template>
+
+
 
 <template name="other_stuff">
 <div class="row-fluid">
@@ -214,12 +216,16 @@ by puppet.</p>
               <p>There are always things which need to be done on your servers, maybe in an orchestrated way. 
               Deployments, maintenance-tasks or implementing worakrounds for urgent issues on more than one server.
               For such stuff <a href="https://puppetlabs.com/mcollective/introduction/">mcollective</a> and/or <a href="http://ansible.cc/">ansible</a> are very usefull.</p>
-              <p><a class="btn" href="http://kibana.org/">View details »</a></p>
             </div><!--/span-->
             <div class="span3">
               <h2>Continous Integration</h2>
               <p>There are reoccuring tasks in the development-space and you want to automate them. Jenkins is a good tool to do that.</p>
               <p><a class="btn" href="https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins">Learn more »</a></p>
+            </div><!--/span-->
+            <div class="span3">
+              <h2>Expose scripts</h2>
+              <p>If you have use mcollective and or ansible, you're probably happy to have something automated. However, an automation is even more valuable if they can be executed by
+              someone who is NOT able to use ssh. Use <a href="https://github.com/hybris/zenboot">zenboot</a> to expose your scripts via a webinterface.</p>
             </div><!--/span-->
 </div>
 </div>
