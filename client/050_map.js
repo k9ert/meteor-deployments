@@ -91,8 +91,10 @@ Template.map.rendered = function() {
 	self.drawsomestuff = Meteor.autorun(function() {
 	  
 	  data = Deployments.find(search_obj_selected()).fetch();
-	  var i = 1;
 	  var myServerHash= {};
+	  var i = 0;
+	  myServerHash[""] = i++; // don't want to have anything on the axis
+	  
 	  data.forEach(function(d) {
 	    if (! myServerHash[d.fqdn]) {
 	      myServerHash[d.fqdn] = i++;
